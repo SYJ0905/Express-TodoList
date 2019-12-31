@@ -1,0 +1,25 @@
+const firebaseAdmin = require('firebase-admin');
+// 引入 dotenv 檔
+// process.env.變數名稱 指向 .env 中的 變數名稱
+require('dotenv').config();
+
+// 跟官方引入是一樣的，不過我們使用變數的方式
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert({
+    type: process.env.FIREBASE_TYPE,
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+    private_key: process.env.FIREBASE_PRIVATE_KEY,
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
+    client_id: process.env.FIREBASE_CLIENT_ID,
+    auth_uri: process.env.FIREBASE_AUTH_URL,
+    token_uri: process.env.FIREBASE_TOKEN_URL,
+    auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDE_X509_CERT_URL,
+    client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
+  }),
+  databaseURL: process.env.FIREBASE_DATABASEURL,
+});
+
+const db = firebaseAdmin.database();
+// 輸出模組給外部 router 使用
+module.exports = db;
