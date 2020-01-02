@@ -4,6 +4,7 @@ const send = document.querySelector('#send');
 const todoList = document.querySelector('.todoList');
 
 send.addEventListener('click', sendTodo);
+todoList.addEventListener('click', deleteTodo);
 
 function sendTodo() {
   const todo = {
@@ -35,4 +36,19 @@ function renderTodo(data) {
   } else {
     return
   }
+}
+
+function deleteTodo(e) {
+  e.preventDefault();
+  if (e.target.nodeName !== 'A') return;
+  const data = {
+    id: e.target.dataset.key,
+  };
+  axios.delete('/deleteTodo', {
+    data,
+  })
+    .then((res) => {
+      console.log(res);
+      renderTodo(res.data);
+    });
 }

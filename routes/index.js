@@ -43,4 +43,24 @@ router.post('/addTodo', function(req, res, next) {
     });
 });
 
+router.delete('/deleteTodo', function(req, res) {
+  const todoId = req.body.id;
+  firebaseAdmin.ref('todo').child(todoId).remove()
+    .then(() => {
+      firebaseAdmin.ref('todo').once('value', (dataSnapshot) => {
+        const listData = [];
+        dataSnapshot.forEach(item => {
+          const itemInfo = item.val(); // item.val() 為一物件
+          itemInfo.key = item.key; // item.key 取唯一值
+          listData.push(itemInfo);
+        });
+        res.send({
+          success: true,
+          result: listData,
+          message: '刪除成功',
+        });
+      });
+    });
+});
+
 module.exports = router;
